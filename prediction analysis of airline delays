@@ -1,0 +1,82 @@
+> airdelay <- read_csv("C:/Users/Admin/Desktop/Data Mining/Datasets/airlinedelaycauses_DelayedFlights.csv")
+> summary(airdelay)
+> str(airdelay)
+> airdelay$WeekDay <-  airdelay$DayOfWeek
+> airdelay$MonthQual <-  airdelay$Month
+> airdelay$WeekDay[ airdelay$WeekDay == 1] = 'Monday'
+> airdelay$WeekDay[ airdelay$WeekDay == 2] = 'Tuesday'
+> airdelay$WeekDay[ airdelay$WeekDay == 3] = 'Wednesday'
+> airdelay$WeekDay[ airdelay$WeekDay == 4] = 'Thursday'
+> airdelay$WeekDay[ airdelay$WeekDay == 5] = 'Friday'
+> airdelay$WeekDay[ airdelay$WeekDay == 6] = 'Saturday'
+> airdelay$WeekDay[ airdelay$WeekDay == 7] = 'Sunday'
+> airdelay$MonthQual[ airdelay$MonthQual == 1] = 'January'
+> airdelay$MonthQual[ airdelay$MonthQual == 2] = 'February'
+> airdelay$MonthQual[ airdelay$MonthQual == 3] = 'March'
+> airdelay$MonthQual[ airdelay$MonthQual == 4] = 'April'
+> airdelay$MonthQual[ airdelay$MonthQual == 5] = 'May'
+> airdelay$MonthQual[ airdelay$MonthQual == 6] = 'June'
+> airdelay$MonthQual[ airdelay$MonthQual == 7] = 'July'
+> airdelay$MonthQual[ airdelay$MonthQual == 8] = 'August'
+> airdelay$MonthQual[ airdelay$MonthQual == 9] = 'September'
+> airdelay$MonthQual[ airdelay$MonthQual == 10] = 'October'
+> airdelay$MonthQual[ airdelay$MonthQual == 11] = 'November'
+> airdelay$MonthQual[ airdelay$MonthQual == 12] = 'December'
+> airdelay%>%group_by(WeekDay)%>%tally%>%arrange(desc(n))%>%as.data.frame()
+> ggplot(data, aes(x=WeekDay, y=DepDelay, fill=DepDelay))+
++     geom_violin()+
++     theme_bw()+
++     theme(legend.position="none")+
++     ggtitle("Delay by weekday")+
++     xlab("Week day")+
++     ylab("Delay in minutes")
+> airdelay%>%group_by(MonthQual)%>%tally%>%arrange(desc(n))%>%as.data.frame()
+> ggplot(data, aes(x=MonthQual, y=DepDelay, fill=DepDelay))+
++     geom_violin()+
++     theme_bw()+
++     theme(legend.position="none")+
++     ggtitle("Delay by month")+
++     xlab("Month")+
++     ylab("Delay in minutes")
+> airdelay$Cancelled[airdelay$Cancelled==0]='No'
+> airdelay$Cancelled[airdelay$Cancelled==1]='Yes'
+> qplot(factor(airdelay$Cancelled), data=airdelay, geom="bar", fill= factor(airdelay$Cancelled))
+> airdelay %>% group_by(Cancelled) %>%tally %>% arrange(desc(n)) %>% as.data.frame()
+> airdelay$CancellationCode[airdelay$CancellationCode == 'A'] = 'Carrier'
+> airdelay$CancellationCode[airdelay$CancellationCode == 'B'] = 'Weather'
+> airdelay$CancellationCode[airdelay$CancellationCode == 'C'] = 'NAS'
+> airdelay$CancellationCode[airdelay$CancellationCode == 'D'] = 'Security'
+> airdelay %>% filter(CancellationCode != 'N') %>%
++   group_by(CancellationCode) %>%
++   tally %>%
++   arrange(desc(n)) %>%
++   as.data.frame()
+> CancelledSubset = subset(airdelay, CancellationCode != 'N')
+> ggplot(CancelledSubset,aes(MonthQual,fill=CancellationCode)) + geom_bar()
+> airdelay %>% filter(CarrierDelay != 'NA',WeatherDelay != 'NA',
++                 NASDelay != 'NA', SecurityDelay != 'NA', LateAircraftDelay != 'NA') %>%
++   select(CarrierDelay,WeatherDelay,NASDelay,SecurityDelay,LateAircraftDelay) %>%
++   summarize(CarrierDelay = mean(CarrierDelay),
++             WeatherDelay = mean(WeatherDelay),
++             SecurityDelay = mean(SecurityDelay),
++             LateAircraftDelay = mean(LateAircraftDelay)) %>%
++   gather(var,mean) %>% 
++  as.data.frame()
+> airdelay %>% filter((CarrierDelay!= 'NA') & CarrierDelay != 0) %>%
++     select(CarrierDelay) %>% summarize(CarrierDelay = mean(CarrierDelay)) %>%
++     gather(var,mean) %>% as.data.frame()
+> airdelay %>%
++     filter((CarrierDelay != 'NA') & CarrierDelay!=0) %>%
++     group_by(MonthQual) %>%
++     summarize(CarrierDelay = mean(CarrierDelay)) %>%
++     arrange(desc(CarrierDelay)) %>% as.data.frame()
+> airdelay %>% filter((WeatherDelay!= 'NA') & WeatherDelay != 0) %>%
++   select(WeatherDelay) %>% summarize(WeatherDelay = mean(WeatherDelay)) %>%
++   gather(var,mean) %>% as.data.frame()
+> airdelay %>% filter((WeatherDelay != 'NA') & WeatherDelay!=0) %>%
++   group_by(MonthQual) %>%
++   summarize(WeatherDelay = mean(WeatherDelay)) %>%
++   arrange(desc(WeatherDelay)) %>% as.data.frame()
+> airdelay %>% filter((WeatherDelay!= 'NA') & WeatherDelay != 0) %>%
++   group_by(MonthQual) %>% tally %>% arrange(desc(n)) %>% as.data.frame()
+
