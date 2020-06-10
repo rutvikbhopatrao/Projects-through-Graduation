@@ -1,0 +1,654 @@
+--MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: rutvikcarrental
+-- ------------------------------------------------------
+-- Server version	5.6.39
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `account`
+--
+
+DROP TABLE IF EXISTS `account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `account` (
+  `AccountID` int(10) unsigned NOT NULL,
+  `LoginID` varchar(45) NOT NULL,
+  `LoginPassword` varchar(45) NOT NULL,
+  `LoginPasswordHash` varchar(100) NOT NULL,
+  `Accountcreateddate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Lastactivity` datetime NOT NULL,
+  `customer_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`AccountID`),
+  UNIQUE KEY `AccountID_UNIQUE` (`AccountID`),
+  KEY `fk_Account_customer_details_idx` (`customer_id`),
+  CONSTRAINT `fk_Account_customer_details` FOREIGN KEY (`customer_id`) REFERENCES `customer_details` (`customer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `account`
+--
+
+LOCK TABLES `account` WRITE;
+/*!40000 ALTER TABLE `account` DISABLE KEYS */;
+INSERT INTO `account` VALUES (1001,'rutvikbryder','p@ssw0rd','a075d17f3d453073853f813838c15b8023b8c487038436354fe599c3942e1f95','2018-04-24 05:07:32','2018-04-24 01:07:32',50001),(1002,'rutvikbhopatrao','secretpassword','95d30169a59c418b52013315fc81bc99fdf0a7b03a116f346ab628496f349ed5','2018-04-26 05:07:32','2018-04-26 01:07:32',50001),(1004,'mitarana','ronaldoislife','a075d17f3d453073853f813838c15b8023b8c487038436354fe599c3942e1f95','2018-04-26 05:07:32','2018-04-26 01:07:32',50004),(1005,'mikeboy','callmemikeboy','95d30169a59c418b52013315fc81bc99fdf0a7b03a116f346ab628496f349ed5','2018-04-26 05:07:32','2018-04-26 01:07:32',50005),(1006,'sureshramesh','kitkatbreak','95d30169a59c418b52013315fc81bc99fdf0a7b03a116f346ab628496f349ed5','2018-04-26 05:07:32','2018-04-26 01:07:32',50007),(1007,'nivedhita','superwoman','a075d17f3d453073853f813838c15b8023b8c487038436354fe599c3942e1f95','2018-04-26 05:07:32','2018-04-26 01:07:32',50008),(1008,'marktowns','bemygyest','a075d17f3d453073853f813838c15b8023b8c487038436354fe599c3942e1f95','2018-04-26 05:07:32','2018-04-26 01:07:32',50009),(1009,'chrisalex','jaguar','a075d17f3d453073853f813838c15b8023b8c487038436354fe599c3942e1f95','2018-04-26 05:07:32','2018-04-26 01:07:32',50010),(1010,'markhuff','audibmw','95d30169a59c418b52013315fc81bc99fdf0a7b03a116f346ab628496f349ed5','2018-04-26 05:07:32','2018-04-26 01:07:32',50011),(1011,'danish','qwertyytrewq','95d30169a59c418b52013315fc81bc99fdf0a7b03a116f346ab628496f349ed5','2018-04-26 05:07:32','2018-04-26 01:07:32',50012),(1012,'markhufffff','aaacccbbbddd','a075d17f3d453073853f813838c15b8023b8c487038436354fe599c3942e1f95','2018-04-26 05:07:32','2018-04-26 01:07:32',50011),(1013,'velaronaldo','hbagdkhhgkj','a075d17f3d453073853f813838c15b8023b8c487038436354fe599c3942e1f95','2018-04-26 05:07:32','2018-04-26 01:07:32',50013),(1014,'naveenraj','secret','95d30169a59c418b52013315fc81bc99fdf0a7b03a116f346ab628496f349ed5','2018-04-26 05:07:32','2018-04-26 01:07:32',50006);
+/*!40000 ALTER TABLE `account` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `billing_details`
+--
+
+DROP TABLE IF EXISTS `billing_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `billing_details` (
+  `billing_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `billing_date` datetime NOT NULL,
+  `billing_status` char(1) NOT NULL,
+  `discount_amount` decimal(10,2) unsigned NOT NULL,
+  `total_amount` decimal(10,2) unsigned NOT NULL,
+  `tax_amount` decimal(10,2) unsigned NOT NULL,
+  `booking_id` int(10) unsigned NOT NULL,
+  `late_fee` decimal(10,2) unsigned NOT NULL,
+  PRIMARY KEY (`billing_id`),
+  UNIQUE KEY `billing_id_UNIQUE` (`billing_id`),
+  KEY `billingfk_idx` (`booking_id`),
+  CONSTRAINT `billingfk` FOREIGN KEY (`booking_id`) REFERENCES `booking_details` (`booking_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1004 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `billing_details`
+--
+
+LOCK TABLES `billing_details` WRITE;
+/*!40000 ALTER TABLE `billing_details` DISABLE KEYS */;
+INSERT INTO `billing_details` VALUES (1001,'2018-01-25 00:00:00','P',24.36,138.03,12.38,100001,0.00),(1002,'2018-01-15 00:00:00','P',0.00,487.13,12.38,100003,0.00),(1003,'2018-04-04 00:00:00','P',10.39,41.57,3.96,100004,0.00);
+/*!40000 ALTER TABLE `billing_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `booked_revenue_view`
+--
+
+DROP TABLE IF EXISTS `booked_revenue_view`;
+/*!50001 DROP VIEW IF EXISTS `booked_revenue_view`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `booked_revenue_view` AS SELECT 
+ 1 AS `booking_id`,
+ 1 AS `CAR`,
+ 1 AS `DROP LOCATION`,
+ 1 AS `REVENUE`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `booking_details`
+--
+
+DROP TABLE IF EXISTS `booking_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `booking_details` (
+  `booking_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `start_date_time` datetime NOT NULL,
+  `end_date_time` datetime NOT NULL,
+  `booking_status` char(1) NOT NULL,
+  `pickup_location_id` int(10) unsigned NOT NULL,
+  `drop_location_id` int(10) unsigned NOT NULL,
+  `car_id` int(10) unsigned NOT NULL,
+  `customer_id` int(10) unsigned NOT NULL,
+  `insurance_id` int(10) unsigned NOT NULL,
+  `actual_return_datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `discount_id` int(10) unsigned NOT NULL,
+  `amount` decimal(10,2) unsigned DEFAULT NULL,
+  `Payment_ID` int(10) unsigned zerofill NOT NULL,
+  PRIMARY KEY (`booking_id`),
+  UNIQUE KEY `booking_id_UNIQUE` (`booking_id`),
+  KEY `pickup_locationfk_idx` (`pickup_location_id`),
+  KEY `drop_locationfk_idx` (`drop_location_id`),
+  KEY `carfk_idx` (`car_id`),
+  KEY `customerfk_idx` (`customer_id`),
+  KEY `car_insurancefk_idx` (`insurance_id`),
+  KEY `discountfk_idx` (`discount_id`),
+  KEY `fk_booking_details_Payment1_idx` (`Payment_ID`),
+  CONSTRAINT `car_insurancefk` FOREIGN KEY (`insurance_id`) REFERENCES `car_insurance` (`insurance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `carfk` FOREIGN KEY (`car_id`) REFERENCES `car` (`car_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `customerfk` FOREIGN KEY (`customer_id`) REFERENCES `customer_details` (`customer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `discountfk` FOREIGN KEY (`discount_id`) REFERENCES `discount` (`discount_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `drop_locationfk` FOREIGN KEY (`drop_location_id`) REFERENCES `location` (`location_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_booking_details_Payment1` FOREIGN KEY (`Payment_ID`) REFERENCES `payment` (`Transaction_ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `pickup_locationfk` FOREIGN KEY (`pickup_location_id`) REFERENCES `location` (`location_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=100009 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `booking_details`
+--
+
+LOCK TABLES `booking_details` WRITE;
+/*!40000 ALTER TABLE `booking_details` DISABLE KEYS */;
+INSERT INTO `booking_details` VALUES (100001,'2018-01-20 10:00:00','2018-01-25 10:00:00','R',101,101,1002,50006,2222,'2018-01-25 15:00:00',205,150.00,0000000001),(100002,'2018-01-21 11:00:00','2018-01-24 10:00:00','C',102,102,1032,50012,2222,'2018-04-26 21:29:44',222,90.00,0000000002),(100003,'2018-02-10 13:00:00','2018-01-15 13:00:00','R',101,101,1029,50011,2001,'2018-01-15 18:00:00',222,450.00,0000000003),(100004,'2018-04-24 13:00:00','2018-04-25 20:30:00','R',106,106,1048,50005,2002,'2018-04-24 00:30:00',202,48.00,0000000004),(100005,'2018-04-18 09:00:00','2018-04-25 09:00:00','B',102,106,1027,50010,2222,'2018-04-26 21:29:44',206,266.00,0000000005),(100006,'2018-04-21 17:00:00','2018-04-25 17:00:00','B',105,107,1014,50013,2003,'2018-04-26 21:29:44',202,168.00,0000000006),(100007,'2018-04-16 08:00:00','2018-04-25 17:00:00','B',102,102,1032,50009,2001,'2018-04-26 21:29:44',205,405.00,0000000007),(100008,'2018-04-11 08:00:00','2018-04-25 17:00:00','B',102,102,1013,50012,2001,'2018-04-26 21:29:44',205,630.00,0000000008);
+/*!40000 ALTER TABLE `booking_details` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER car_details_update
+AFTER UPDATE ON booking_details
+FOR EACH ROW 
+BEGIN
+	IF 
+		NEW.booking_status='C'
+	THEN
+		UPDATE car
+		set availablilty='A', 
+			location_id=new.pickup_location_id
+		WHERE car_id=new.car_id;
+	ELSE IF
+			NEW.booking_status='R'
+		THEN
+			UPDATE car
+			set availablilty='A', 
+				location_id=new.drop_location_id,
+				mileage=mileage+get_mileage
+			WHERE car_id=new.car_id;
+			END IF;
+	END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `car`
+--
+
+DROP TABLE IF EXISTS `car`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `car` (
+  `car_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `registration_number` varchar(7) NOT NULL,
+  `model_name` varchar(25) NOT NULL,
+  `make` varchar(25) NOT NULL,
+  `model_year` int(4) unsigned NOT NULL,
+  `mileage` int(10) unsigned NOT NULL,
+  `fuel` int(3) NOT NULL,
+  `car_typeid` int(10) unsigned NOT NULL,
+  `location_id` int(10) unsigned NOT NULL,
+  `availablilty` char(1) NOT NULL,
+  PRIMARY KEY (`car_id`),
+  UNIQUE KEY `car_id_UNIQUE` (`car_id`),
+  KEY `cartypeidfk_idx` (`car_typeid`),
+  KEY `fk_car_location1_idx` (`location_id`),
+  CONSTRAINT `cartypeidfk` FOREIGN KEY (`car_typeid`) REFERENCES `car_type` (`typeID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_car_location1` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1052 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `car`
+--
+
+LOCK TABLES `car` WRITE;
+/*!40000 ALTER TABLE `car` DISABLE KEYS */;
+INSERT INTO `car` VALUES (1001,'RUTV1K','MUSTANG GT','FORD',2017,2400,70,16,103,'A'),(1002,'ABX1234','CIVIC','HONDA',2014,10000,100,11,101,'A'),(1003,'AHK7325','RAV4','TOYOTA',2016,3400,100,17,103,'A'),(1004,'ASD9090','ACCORD','HONDA',2016,200,100,13,103,'A'),(1005,'CFT1908','328I','BMW',2015,10800,100,16,104,'A'),(1006,'CXZ2356','AVENGER','DODGE',2015,5000,100,13,102,'A'),(1007,'EDM8610','GLA','MERCEDEZ BENZ',2015,12900,100,17,102,'A'),(1008,'EFB5427','WAYFARER','FORD',2014,14350,100,15,105,'A'),(1009,'FKD8202','GOLF','VOLKSWAGAN',2016,9000,100,12,106,'A'),(1010,'GLS7625','FOCUS','FORD',2014,12000,100,12,107,'A'),(1011,'GLZ2376','COROLLA','TOYOTA',2016,5000,100,11,104,'A'),(1012,'HGF5628','TAURUS','FORD',2013,15540,100,14,106,'A'),(1013,'HJK1234','CIVIC','HONDA',2015,20145,100,11,102,'N'),(1014,'HNX1890','PRIUS','TOYOTA',2015,15690,100,12,105,'N'),(1015,'JLS1097','SUBURBAN','CHEVROLET',2014,13290,100,19,104,'A'),(1016,'JSL7920','ODYSSEY','HONDA',2013,19320,100,20,106,'A'),(1017,'KJS1983','PRIUS','TOYOTA',2014,20900,100,12,104,'A'),(1018,'LDJ7719','EDGE','FORD',2016,5690,100,18,101,'A'),(1019,'LKJ7253','200','CHRYSTLER',2014,16300,100,14,107,'A'),(1020,'MKU0172','TLX','ACURA',2014,12345,100,16,103,'A'),(1021,'MNB8654','FALCON','FORD',2012,10900,100,15,103,'A'),(1022,'MWO9296','ODYSSEY','HONDA',2016,2300,100,20,103,'A'),(1023,'OHZ0976','EDGE','FORD',2012,27890,100,18,104,'A'),(1024,'OTY7293','CRUZE','CHEVROLET',2016,17800,100,13,102,'A'),(1025,'PAJ5289','GRAND CARAVAN','DODGE',2014,23478,100,20,105,'A'),(1026,'PLM9873','IMPALA','CHEVROLET',2015,18900,100,15,106,'A'),(1027,'POI7281','200','CHRYSTLER',2016,18830,100,14,102,'N'),(1028,'QIO7621','EQUINOX','CHEVROLET',2013,17560,100,17,107,'A'),(1029,'QSC8709','MKZ','LINCOLN',2012,18700,100,16,101,'A'),(1030,'QWE4562','LEGACY','SUBARU',2012,13420,100,13,101,'A'),(1031,'RKS9862','TAHOE','CHEVROLET',2013,20390,100,18,105,'A'),(1032,'SDF4567','FIESTA','FORD',2015,15000,100,11,102,'N'),(1033,'SDL9356','FOCUS','FORD',2016,10009,100,12,103,'A'),(1034,'SHK7767','QUEST','NISSAN',2012,23478,100,20,107,'A'),(1035,'TGB8961','GENESIS','HYUNDAI',2013,17620,100,16,102,'A'),(1036,'TRE9726','200','CHRYSTLER',2012,14320,100,14,105,'A'),(1037,'TSJ6290','QUEST','NISSAN',2015,13200,100,20,104,'A'),(1038,'UHJ6782','EXPEDITION','FORD',2015,11750,100,19,105,'A'),(1039,'UHV9786','IMPALA','CHEVROLET',2013,11500,100,15,104,'A'),(1040,'UIA8709','EXPEDITION','FORD',2012,19870,100,19,102,'A'),(1041,'UYT3981','LEGACY','SUBARU',2013,16750,100,13,104,'A'),(1042,'VBN6283','TAURUS','FORD',2015,17500,100,14,101,'A'),(1043,'WDV2458','FALCON','FORD',2016,5600,100,15,107,'A'),(1044,'WER3245','ACCENT','HYUNDAI',2014,12356,100,11,103,'A'),(1045,'WHM7619','AVALON','TOYOTA',2016,7800,100,16,105,'A'),(1046,'WIJ6190','EDGE','FORD',2014,18700,100,18,106,'A'),(1047,'WKJ7972','SEQUOIA','TOYOTA',2013,14500,100,19,103,'A'),(1048,'WLZ8955','ESCAPE','FORD',2012,19800,100,17,106,'A'),(1049,'XBM6822','SUBURBAN','CHEVROLET',2016,3400,100,19,106,'A'),(1050,'YSN1927','PATHFINDER','NISSAN',2014,14390,100,17,101,'A'),(1051,'ZDT8612','TAHOE','CHEVROLET',2015,14300,100,18,107,'A');
+/*!40000 ALTER TABLE `car` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `car_has_repair`
+--
+
+DROP TABLE IF EXISTS `car_has_repair`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `car_has_repair` (
+  `car_id` int(10) unsigned NOT NULL,
+  `RepairID` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`car_id`,`RepairID`),
+  KEY `fk_car_has_Car_Repair_Car_Repair1_idx` (`RepairID`),
+  KEY `fk_car_has_Car_Repair_car1_idx` (`car_id`),
+  CONSTRAINT `fk_car_has_Car_Repair_Car_Repair1` FOREIGN KEY (`RepairID`) REFERENCES `repair` (`RepairID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_car_has_Car_Repair_car1` FOREIGN KEY (`car_id`) REFERENCES `car` (`car_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `car_has_repair`
+--
+
+LOCK TABLES `car_has_repair` WRITE;
+/*!40000 ALTER TABLE `car_has_repair` DISABLE KEYS */;
+INSERT INTO `car_has_repair` VALUES (1002,301),(1003,301),(1006,301),(1005,303),(1006,305);
+/*!40000 ALTER TABLE `car_has_repair` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `car_insurance`
+--
+
+DROP TABLE IF EXISTS `car_insurance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `car_insurance` (
+  `insurance_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `insurance_name` varchar(45) NOT NULL,
+  `cover_details` varchar(200) NOT NULL,
+  `cost_day` decimal(4,2) NOT NULL,
+  PRIMARY KEY (`insurance_id`),
+  UNIQUE KEY `insurance_id_UNIQUE` (`insurance_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2223 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `car_insurance`
+--
+
+LOCK TABLES `car_insurance` WRITE;
+/*!40000 ALTER TABLE `car_insurance` DISABLE KEYS */;
+INSERT INTO `car_insurance` VALUES (2001,'COLLISION DAMAGE WAIVER','Covers theft and total damage to the rental car',15.00),(2002,'SUPPLEMENTAL LIABILITY PROTECTION','Covers damage done to others',12.00),(2003,'PERSONAL ACCIDENT INSURANCE','Covers medical costs for driver and passengers',10.00),(2004,'PERSONAL EFFECTS COVERAGE','Covers theft of personal belongings',5.00),(2222,'NO INSURANCE TAKEN ','Covers nothing',0.00);
+/*!40000 ALTER TABLE `car_insurance` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `car_type`
+--
+
+DROP TABLE IF EXISTS `car_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `car_type` (
+  `typeID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `type_name` varchar(25) NOT NULL,
+  `no_of_people` int(11) NOT NULL,
+  `cost_day` decimal(5,2) NOT NULL,
+  `latefee_hour` decimal(5,2) NOT NULL,
+  PRIMARY KEY (`typeID`),
+  UNIQUE KEY `typeID_UNIQUE` (`typeID`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `car_type`
+--
+
+LOCK TABLES `car_type` WRITE;
+/*!40000 ALTER TABLE `car_type` DISABLE KEYS */;
+INSERT INTO `car_type` VALUES (11,'ECONOMY',5,30.00,0.90),(12,'COMPACT',5,32.00,0.96),(13,'MID SIZE',5,35.00,1.05),(14,'STANDARD',5,38.00,1.14),(15,'FULL SIZE',5,40.00,1.20),(16,'LUXURY CAR',5,75.00,2.25),(17,'MID SIZE SUV',5,36.00,1.08),(18,'STANDARD SUV',5,40.00,1.20),(19,'FULL SIZE SUV',8,60.00,1.80),(20,'MINI VAN',7,70.00,2.10);
+/*!40000 ALTER TABLE `car_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `car_type_has_location`
+--
+
+DROP TABLE IF EXISTS `car_type_has_location`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `car_type_has_location` (
+  `car_type_typeID` int(10) unsigned NOT NULL,
+  `location_location_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`car_type_typeID`,`location_location_id`),
+  KEY `fk_car_type_has_location_location1_idx` (`location_location_id`),
+  KEY `fk_car_type_has_location_car_type1_idx` (`car_type_typeID`),
+  CONSTRAINT `fk_car_type_has_location_car_type1` FOREIGN KEY (`car_type_typeID`) REFERENCES `car_type` (`typeID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_car_type_has_location_location1` FOREIGN KEY (`location_location_id`) REFERENCES `location` (`location_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `car_type_has_location`
+--
+
+LOCK TABLES `car_type_has_location` WRITE;
+/*!40000 ALTER TABLE `car_type_has_location` DISABLE KEYS */;
+INSERT INTO `car_type_has_location` VALUES (11,101),(12,101),(13,101),(15,101),(16,101),(17,101),(19,101),(20,101),(11,102),(12,102),(13,102),(14,102),(15,102),(17,102),(18,102),(11,103),(13,103),(14,103),(17,103),(18,103),(11,104),(15,104),(17,104),(11,105),(14,105),(15,105),(16,105),(17,105),(18,105),(19,105),(20,105),(14,106),(16,106),(19,106),(12,107),(13,107),(17,107);
+/*!40000 ALTER TABLE `car_type_has_location` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `customer_details`
+--
+
+DROP TABLE IF EXISTS `customer_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `customer_details` (
+  `customer_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `dl_number` varchar(20) NOT NULL,
+  `fname` varchar(25) NOT NULL,
+  `mname` varchar(25) DEFAULT NULL,
+  `lname` varchar(25) NOT NULL,
+  `primary_phone` bigint(20) unsigned NOT NULL,
+  `alternate_phone` bigint(20) unsigned DEFAULT NULL,
+  `email_id` varchar(30) NOT NULL,
+  `address_street` varchar(30) NOT NULL,
+  `city` varchar(20) NOT NULL,
+  `state` varchar(20) NOT NULL,
+  `zipcode` int(5) unsigned zerofill NOT NULL,
+  PRIMARY KEY (`customer_id`),
+  UNIQUE KEY `serial_number_UNIQUE` (`customer_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=50014 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `customer_details`
+--
+
+LOCK TABLES `customer_details` WRITE;
+/*!40000 ALTER TABLE `customer_details` DISABLE KEYS */;
+INSERT INTO `customer_details` VALUES (50001,'MH4620110009106','Rutvik','Rajendra','Bhopatrao',8573341217,9665407666,'rutvikbhopatrao@gmail.com','1185 Boylston St','Boston','MA',02215),(50002,'MH0920131112548','Aditya','Rajendra','Patil',8573341125,9604344455,'adityayadravkar@gmail.com','1185 Boylston St ','Boston','MA',02215),(50003,'KN0120121257777','Prajwal','Renuka','Praveen',9990009990,7897734377,'prajwalpraveen@gmail.com','235 Heath St','Boston','MA',02113),(50004,'E7521097','MITA','','RANA',8798796788,8573341111,'mitarana@gmail.com','367 MEANDERING WAY','HOUSTON','TEXAS',76245),(50005,'F0091266','MIKE','','BOYEAR',4554674668,8573341112,'mikeboy@gmail.com','1007 DALLAS PARKWAY','DALLAS','TEXAS',72212),(50006,'F1234554','NAVEEN','','RAJ',7879779888,8573341113,'naveen@gmail.com','700 CAMPBELL RD','RICHARDSON','TEXAS',75080),(50007,'F2345611','SURESH','KUMAR','GOPALAKRISHNAN',4334677661,8573341114,'suresh2234@gmail.com','6547 CANOGA AVE','CANOGA PARK','CALIFORNIA',91303),(50008,'F9764521','NIVEDITHA','','VARADHA CHANDRASEKARAN',2477644646,8573341115,'nivi07@gmail.com','800 RENNER RD','RICHARDSON','TEXAS',75080),(50009,'I3478953','MARK','S','TOWNSEND',6797976767,8573341116,'markstown@gmail.com','7825 MCCALLUM BLVD','DALLAS','TEXAS',75252),(50010,'P1234567','CHRIS','','ALEXANDER',9874323787,8573341117,'chrisalex@gmail.com','2256 WALL STREET','NEWARK','NEW JERSEY',65289),(50011,'R8763578','MARK','','HUFF',7687923467,8573341118,'markhuff@gmail.com','1445 ROSS AVE','DALLAS','TEXAS',75202),(50012,'T0981237','DANISH','','HASSAN',7876437776,8573341119,'danishhasan@gmail.com','888 PRESTON ROAD','DULLES','VIRGINIA',92367),(50013,'V5690245','VELA','R','REYNALDO',8797455555,8573341120,'reyvela@gmail.com','0099 ALMA ROAD','DULLES','VIRGINIA',97325);
+/*!40000 ALTER TABLE `customer_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `discount`
+--
+
+DROP TABLE IF EXISTS `discount`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `discount` (
+  `discount_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Discount_name` varchar(25) NOT NULL,
+  `expirydate` datetime NOT NULL,
+  `Discount_percentage` decimal(4,2) NOT NULL,
+  PRIMARY KEY (`discount_id`),
+  UNIQUE KEY `discount_id_UNIQUE` (`discount_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=223 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `discount`
+--
+
+LOCK TABLES `discount` WRITE;
+/*!40000 ALTER TABLE `discount` DISABLE KEYS */;
+INSERT INTO `discount` VALUES (201,'WEEKLY RENTALS','2018-01-25 00:00:00',25.00),(202,'CTS CORPORATE','2019-09-02 00:00:00',20.00),(203,'UPGRADE SPECIAL','2017-10-29 00:00:00',20.00),(204,'IBM CORPORATE','2020-11-09 00:00:00',25.00),(205,'HOLIDAY SPECIAL','2016-12-15 00:00:00',10.00),(206,'ONE WAY SPECIAL','2018-02-18 00:00:00',20.00),(222,'NO DISCOUNTAPPLIED','2050-01-01 00:00:00',0.00);
+/*!40000 ALTER TABLE `discount` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `feedback`
+--
+
+DROP TABLE IF EXISTS `feedback`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `feedback` (
+  `FeedbackID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Details` varchar(300) NOT NULL,
+  `booking_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`FeedbackID`),
+  UNIQUE KEY `FeedbackID_UNIQUE` (`FeedbackID`),
+  KEY `fk_Feedback_booking_details1_idx` (`booking_id`),
+  CONSTRAINT `fk_Feedback_booking_details1` FOREIGN KEY (`booking_id`) REFERENCES `booking_details` (`booking_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `feedback`
+--
+
+LOCK TABLES `feedback` WRITE;
+/*!40000 ALTER TABLE `feedback` DISABLE KEYS */;
+INSERT INTO `feedback` VALUES (1,'We travel at minimum 6 times per year and always use a rental car. Chose and even joined their customer program because of their supposed reputable name. Ended up almost 5 times as much as quoted price. Cancelled membership and will never rent from them again. I understand actual cost usually is hig',100001),(2,'I had an unfortunate car accident that literally left me stranded, so I reached out to Enterprise. I went to the closest location (McDowell St, Raleigh, NC) to work Friday via nice co-worker & Jordan greeted me with a smile. He was very kind and so helpful. Today, I was able to claim vs out of pocke',100002),(3,'My local Enterprise Car rental place is the best! Hoover, AL on Columbiana Rd. I rent fairly often, and just about every person at this branch from trainees up to manager is courteous, knowledgeable and super efficient at getting me checked in and out without any hassle. Recently, I even obtained a ',100003),(4,'I have been using the Services from Enterprise rental car from the past 10 months and I have rented the car for around 200 days during this period and from different locations in United States Orange county. I would recommend anyone coming into the country and looking for rental car, I would say thi',100005),(5,'Service was excellent but very expensive compared to other companies. My car was dirty but I agreed to take it that way without being washed. Only had 1/4 tank of fuel to start. Discounts were applied but still pricey for a week\'s time.',100007);
+/*!40000 ALTER TABLE `feedback` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `garage_update_view`
+--
+
+DROP TABLE IF EXISTS `garage_update_view`;
+/*!50001 DROP VIEW IF EXISTS `garage_update_view`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `garage_update_view` AS SELECT 
+ 1 AS `CAR`,
+ 1 AS `LOCATION`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `location`
+--
+
+DROP TABLE IF EXISTS `location`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `location` (
+  `location_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `location_name` varchar(45) NOT NULL,
+  `address_street` varchar(30) NOT NULL,
+  `city` varchar(20) NOT NULL,
+  `state` varchar(20) NOT NULL,
+  `zipcode` int(5) unsigned NOT NULL,
+  PRIMARY KEY (`location_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `location`
+--
+
+LOCK TABLES `location` WRITE;
+/*!40000 ALTER TABLE `location` DISABLE KEYS */;
+INSERT INTO `location` VALUES (101,'DALLAS LOVE FIELD AIRPORT','89 Herb Kelleher Way','Dallas','Texas',75235),(102,'LOS ANGELES INTL AIRPORT','154 World Way','Los Angeles','California',90045),(103,'BOSTON LOGAN INTL AIRPORT','15 Transportation Way','Boston','Massachusetts',75261),(104,'WEST HOUSTON AIRPORT','5400 Groschke Rd','Houston','Texas',77094),(105,'WASHINGTON DULLES INTL AIRPORT','78 Saarinen Cir','Dulles','Virginia',20166),(106,'NEWARK LIBERTY INTL AIRPORT','120 Brewster Rd','Newark','New Jersey',7114),(107,'SALT LAKE CITY INTL AIRPORT','6 N Terminal Dr','Salt Lake City','Utah',84122);
+/*!40000 ALTER TABLE `location` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `payment`
+--
+
+DROP TABLE IF EXISTS `payment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `payment` (
+  `Transaction_ID` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `Credit_Card_Number` varchar(16) NOT NULL,
+  `Exp_Month` int(2) NOT NULL,
+  `Exp_Year` int(2) NOT NULL,
+  `CVV` char(3) NOT NULL,
+  `Name_on_the_card` varchar(50) NOT NULL,
+  `Current_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Transaction_ID`),
+  UNIQUE KEY `Credit_Card_ID_UNIQUE` (`Transaction_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `payment`
+--
+
+LOCK TABLES `payment` WRITE;
+/*!40000 ALTER TABLE `payment` DISABLE KEYS */;
+INSERT INTO `payment` VALUES (0000000001,'9876789976544663',12,23,'225','NAVEEN RAJ','2016-04-26 15:10:54'),(0000000002,'6687676676676564',8,22,'789','DANISH HASSAN','2016-04-28 15:10:54'),(0000000003,'9876789976544456',6,20,'020','MARK HUIFF','2016-04-29 15:20:54'),(0000000004,'9876787987876688',8,18,'114','MIKE B','2016-04-29 15:40:54'),(0000000005,'9876789987978978',8,17,'123','CHRIS ALEXANDER','2016-04-30 16:10:54'),(0000000006,'7879987867645657',9,25,'258','VELA R','2016-05-01 05:12:54'),(0000000007,'7899764545786444',1,22,'456','MARK S T','2016-05-02 05:12:54'),(0000000008,'7946121687434346',12,21,'254','DANISH HASSAN','2016-05-02 15:51:54');
+/*!40000 ALTER TABLE `payment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `repair`
+--
+
+DROP TABLE IF EXISTS `repair`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `repair` (
+  `RepairID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Repairdetails` varchar(150) NOT NULL,
+  PRIMARY KEY (`RepairID`),
+  UNIQUE KEY `RepairID_UNIQUE` (`RepairID`)
+) ENGINE=InnoDB AUTO_INCREMENT=307 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `repair`
+--
+
+LOCK TABLES `repair` WRITE;
+/*!40000 ALTER TABLE `repair` DISABLE KEYS */;
+INSERT INTO `repair` VALUES (301,'Wheels change'),(302,'radiator damage'),(303,'Airconditioner failure'),(304,'Door jams'),(305,'Engine check light'),(306,'Taillight failure');
+/*!40000 ALTER TABLE `repair` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping events for database 'rutvikcarrental'
+--
+
+--
+-- Dumping routines for database 'rutvikcarrental'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `sp_calc_discount_amount` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_calc_discount_amount`(	
+IN `total_amount` decimal(10,2),
+IN `discount_id` int(10),
+IN `discount_percentage` decimal(4,2),
+OUT `billing_details.discount_amount` decimal(10,2)
+)
+BEGIN
+	declare totalamount decimal(10,2);
+    declare discid int(10);
+    declare discpercent decimal(4,2);
+    set @totalamount=total_amount;
+    set @discid=discount_id;
+    set @discpercent=discount_percentage;
+    select Discount_percentage 
+    from discount 
+    where discount_id=discid;
+    set `billing_details.discount_amount` = `total_amount` * (Discount_percentage/100);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_calc_latefee_tax_amount` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_calc_latefee_tax_amount`(	
+IN `actual_return_datetime` timestamp,
+IN `end_date_time` datetime,
+IN `car_id` int(10),
+IN `amount` decimal(10,2),
+IN `latefee_hour` decimal(10,2),
+OUT `booking_details.late_fee` decimal(10,2),
+OUT `billing_details.tax_amount` decimal(10,2)
+)
+BEGIN
+	declare actual timestamp;
+    declare endtime datetime;
+    declare car int(10);
+    declare amount decimal(10,2);
+    declare latefeehour decimal(10,2);
+	set @actual=actual_return_datetime;
+    set @endtime=end_date_time;
+    set @car=car_id;
+    set @amount=amount;
+    set @latefeehour=latefee_hour;  
+    SELECT ct.latefee_hour, bo.actual_return_datetime, bo.end_date_time, bo.amount
+	FROM car_type ct 
+    INNER JOIN car c ON ct.typeid = c.car_typeid 
+	INNER JOIN booking_details bo ON c.car_id=bo.car_id
+    INNER JOIN billing_details bi ON bo.booking_id=bi.booking_id
+    WHERE c.car_id=car;
+    IF 
+		actual > endtime 
+    THEN
+		set `booking_details.late_fee` = timediff(actual,endtime)*latefeehour;
+	ELSE
+		set `booking_details.late_fee` = 0;
+	END IF;
+    set `billing_details.tax_amount` = ((amount + `booking_details.late_fee`)*0.0825);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Final view structure for view `booked_revenue_view`
+--
+
+/*!50001 DROP VIEW IF EXISTS `booked_revenue_view`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `booked_revenue_view` AS select `bo`.`booking_id` AS `booking_id`,concat(`c`.`make`,' ',`c`.`model_name`) AS `CAR`,`bo`.`drop_location_id` AS `DROP LOCATION`,`bi`.`total_amount` AS `REVENUE` from ((`billing_details` `bi` join `booking_details` `bo` on((`bi`.`booking_id` = `bo`.`booking_id`))) join `car` `c` on((`bo`.`car_id` = `c`.`car_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `garage_update_view`
+--
+
+/*!50001 DROP VIEW IF EXISTS `garage_update_view`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `garage_update_view` AS select concat(`c`.`make`,' ',`c`.`model_name`) AS `CAR`,`location`.`location_name` AS `LOCATION` from (((`car` `c` join `car_type` on((`c`.`car_typeid` = `car_type`.`typeID`))) join `car_type_has_location` on((`car_type`.`typeID` = `car_type_has_location`.`car_type_typeID`))) join `location` on((`car_type_has_location`.`location_location_id` = `location`.`location_id`))) where (`c`.`availablilty` = 'A') */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-04-27 12:05:59
